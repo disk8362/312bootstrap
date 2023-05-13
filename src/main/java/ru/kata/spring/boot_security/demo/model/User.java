@@ -27,8 +27,6 @@ public class User implements UserDetails {
 
     private String password;
 
-    private Set<Role> roles = new HashSet<>();
-
     public User() {
     }
 
@@ -49,20 +47,20 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public void setName(String name) {
         this.name = name;
     }
 
-    public String getSurname() {
-        return surname;
+    public String getName() {
+        return name;
     }
 
     public void setSurname(String surname) {
         this.surname = surname;
+    }
+
+    public String getSurname() {
+        return surname;
     }
 
     public String getEmail() {
@@ -81,12 +79,12 @@ public class User implements UserDetails {
         this.age = age;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     @Override
@@ -123,6 +121,8 @@ public class User implements UserDetails {
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
+
     public Set<Role> getRoles() {
         return roles;
     }
