@@ -15,6 +15,9 @@ import ru.kata.spring.boot_security.demo.service.UserService;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    private UserService userService;
+
     private final SuccessUserHandler successUserHandler;
 
     public WebSecurityConfig(SuccessUserHandler successUserHandler) {
@@ -25,9 +28,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
-
-    @Autowired
-    private UserService userService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -40,7 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin().successHandler(successUserHandler)
                 .permitAll()
                 .and()
-                .logout().logoutSuccessUrl("/")
+                .logout().logoutSuccessUrl("/login")
                 .permitAll();
     }
 

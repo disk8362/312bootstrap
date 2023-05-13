@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.dao.UserDao;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
-import ru.kata.spring.boot_security.demo.repository.UserRepository;
 
 import java.util.Collection;
 import java.util.List;
@@ -22,13 +21,6 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
     @Autowired
     private UserDao userDao;
-
-    private UserRepository userRepository;
-
-    @Autowired
-    public void setUserRepository(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     @Override
     public List<User> getAllUsers() {
@@ -60,7 +52,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
     }
 
     public User findByName(String name) {
-        return userRepository.findByName(name);
+        return userDao.findByName(name);
     }
 
     @Override
@@ -76,5 +68,11 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
         return roles.stream().map(r -> new SimpleGrantedAuthority(r.getName())).collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public void addRole(Role role) {
+        userDao.addRole(role);
     }
 }
