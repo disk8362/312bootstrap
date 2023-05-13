@@ -21,7 +21,7 @@ public class Create {
     }
 
     @PostConstruct
-    private void dataBaseInit() {
+    private void createUsers() {
         Role adminRole = new Role("ADMIN");
         Role userRole = new Role("USER");
         Set<Role> setAdmin = new HashSet<>();
