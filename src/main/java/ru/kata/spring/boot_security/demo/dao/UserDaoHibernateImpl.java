@@ -24,7 +24,7 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public void saveUser(User user) {
-        entityManager.persist(user);
+        entityManager.merge(user);
     }
 
     @Override
@@ -51,10 +51,15 @@ public class UserDaoHibernateImpl implements UserDao {
     }
 
     @Override
-    public User findByName(String name) {
+    public User findByName(String email) {
         return entityManager
-                .createQuery("select u from User u where u.name = :name", User.class)
-                .setParameter("name", name)
+                .createQuery("select u from User u where u.email = :email", User.class)
+                .setParameter("email", email)
                 .getSingleResult();
+    }
+
+    @Override
+    public List<Role> getRoles() {
+        return entityManager.createQuery("select r from Role r", Role.class).getResultList();
     }
 }

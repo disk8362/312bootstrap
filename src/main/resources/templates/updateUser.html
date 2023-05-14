@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Update</title>
+    <title>Update user</title>
 </head>
 <body>
 <br>
@@ -30,6 +30,10 @@
     <div>
         <label>Password:&nbsp;</label>
         <input type="text" th:field="*{password}"></input>
+    </div>
+    <div>
+        <label>Role:&nbsp;</label>
+        <input type="text" th:field="*{roles}"></input>
     </div>
     <div>
         <button type="submit">Add</button>

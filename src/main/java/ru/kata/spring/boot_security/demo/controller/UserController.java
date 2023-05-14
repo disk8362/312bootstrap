@@ -19,32 +19,41 @@ public class UserController {
     }
 
     @RequestMapping("/admin")
-    public String getUsers(Model model) {
+    public String getUsers(Model model, ModelMap modelMap, Principal principal) {
+        modelMap.addAttribute("user", userService.findByName(principal.getName()));
         model.addAttribute("users", userService.getAllUsers());
+        model.addAttribute("roles", userService.getRoles());
         return "admin";
     }
 
     @GetMapping(value = "admin/add")
-    public String addNewUser(Model model) {
-        model.addAttribute("user", new User());
+    public String addNewUser(Model model, ModelMap modelMap, Principal principal) {
+//        model.addAttribute("user", new User());
+        model.addAttribute("users", userService.getAllUsers());
+        model.addAttribute("roles", userService.getRoles());
+        modelMap.addAttribute("user", userService.findByName(principal.getName()));
         return "addUser";
     }
 
     @RequestMapping(value = "/saveUser")
-    public String saveUser(@ModelAttribute("user") User user) {
+    public String saveUser(@ModelAttribute("user") User user, Model model) {
+        model.addAttribute("roles", userService.getRoles());
+        model.addAttribute("users", userService.getAllUsers());
         userService.saveUser(user);
         return "redirect:/admin";
     }
 
     @GetMapping(value = "admin/updateUser/{id}")
     public String getUser(ModelMap model, @PathVariable("id") Long id) {
+        model.addAttribute("roles", userService.getRoles());
         User user = userService.getUser(id);
         model.addAttribute("user", user);
         return "updateUser";
     }
 
     @PostMapping(value = "/updateUser")
-    public String updateUser(@ModelAttribute("user") User user) {
+    public String updateUser(@ModelAttribute("user") User user, Model model) {
+        model.addAttribute("roles", userService.getRoles());
         userService.updateUser(user);
         return "redirect:/admin";
     }
@@ -59,5 +68,10 @@ public class UserController {
     public String getUser(ModelMap modelMap, Principal principal) {
         modelMap.addAttribute("user", userService.findByName(principal.getName()));
         return "user";
+    }
+
+    @GetMapping(value = "/login")
+    public String loginPage() {
+        return "login";
     }
 }

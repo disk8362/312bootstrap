@@ -51,18 +51,18 @@ public class UserServiceImp implements UserService, UserDetailsService {
         userDao.updateUser(user);
     }
 
-    public User findByName(String name) {
-        return userDao.findByName(name);
+    public User findByName(String email) {
+        return userDao.findByName(email);
     }
 
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
-        User user = findByName(name);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = findByName(email);
         if (user == null) {
-            throw new UsernameNotFoundException(String.format("User not found", name));
+            throw new UsernameNotFoundException(String.format("User not found", email));
         }
-        return new org.springframework.security.core.userdetails.User(user.getName(), user.getPassword(),
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),
                 mapRolesToAuthorities(user.getRoles()));
     }
 
@@ -74,5 +74,10 @@ public class UserServiceImp implements UserService, UserDetailsService {
     @Transactional
     public void addRole(Role role) {
         userDao.addRole(role);
+    }
+
+    @Override
+    public List<Role> getRoles() {
+        return userDao.getRoles();
     }
 }

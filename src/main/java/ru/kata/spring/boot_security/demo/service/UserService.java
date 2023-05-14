@@ -13,7 +13,8 @@ public interface UserService extends UserDetailsService {
     public User getUser(Long id);
     void deleteUser(Long id);
     public void updateUser(User user);
-    public User findByName(String name);
+    public User findByName(String email);
     void addRole(Role role);
+   public List<Role> getRoles();
 
 }
