@@ -31,6 +31,7 @@ public class Create {
         setAdmin.add(adminRole);
         setAdmin.add(userRole);
         setUser.add(userRole);
+        //PASSWORD:21
         User newUser = new User("Ivan", "Ivanov", "ivan@mail.com", 35, "$2a$12$Hnbn446gl9H.z/8/OqfOxuhBGEIpYZc5y34j6lFP6rR23FVJYKU/G",setAdmin );
         User admin = new User("Petr", "Petrov", "petr@gmail.com", 20, "$2a$12$Hnbn446gl9H.z/8/OqfOxuhBGEIpYZc5y34j6lFP6rR23FVJYKU/G",setUser );
         userService.saveUser(newUser);
