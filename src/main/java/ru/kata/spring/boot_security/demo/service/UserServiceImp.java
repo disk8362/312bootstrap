@@ -6,8 +6,10 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.kata.spring.boot_security.demo.dao.RoleDao;
 import ru.kata.spring.boot_security.demo.dao.UserDao;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
@@ -22,6 +24,12 @@ public class UserServiceImp implements UserService, UserDetailsService {
     @Autowired
     private UserDao userDao;
 
+    @Autowired
+    private RoleDao roleDao;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public List<User> getAllUsers() {
         return userDao.getAllUsers();
@@ -30,6 +38,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
     @Override
     @Transactional
     public void saveUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userDao.saveUser(user);
     }
 
@@ -48,6 +57,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
     @Override
     @Transactional
     public void updateUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userDao.updateUser(user);
     }
 
@@ -73,11 +83,11 @@ public class UserServiceImp implements UserService, UserDetailsService {
     @Override
     @Transactional
     public void addRole(Role role) {
-        userDao.addRole(role);
+        roleDao.addRole(role);
     }
 
     @Override
     public List<Role> getRoles() {
-        return userDao.getRoles();
+        return roleDao.getRoles();
     }
 }

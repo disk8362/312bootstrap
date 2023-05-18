@@ -46,20 +46,10 @@ public class UserDaoHibernateImpl implements UserDao {
     }
 
     @Override
-    public void addRole(Role role) {
-        entityManager.persist(role);
-    }
-
-    @Override
     public User findByName(String email) {
         return entityManager
                 .createQuery("select u from User u where u.email = :email", User.class)
                 .setParameter("email", email)
                 .getSingleResult();
-    }
-
-    @Override
-    public List<Role> getRoles() {
-        return entityManager.createQuery("select r from Role r", Role.class).getResultList();
     }
 }

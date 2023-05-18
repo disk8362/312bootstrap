@@ -12,7 +12,5 @@ public interface UserDao {
     public User getUser(Long id);
     public void updateUser(User user);
     public void deleteUser(Long id);
-    void addRole(Role role);
     User findByName(String email);
-   public List<Role> getRoles();
 }

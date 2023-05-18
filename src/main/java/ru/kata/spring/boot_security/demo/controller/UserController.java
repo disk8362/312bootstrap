@@ -27,8 +27,7 @@ public class UserController {
     }
 
     @GetMapping(value = "admin/add")
-    public String addNewUser(Model model, ModelMap modelMap, Principal principal) {
-//        model.addAttribute("user", new User());
+    public String addNewUser(User user, Model model, ModelMap modelMap, Principal principal) {
         model.addAttribute("users", userService.getAllUsers());
         model.addAttribute("roles", userService.getRoles());
         modelMap.addAttribute("user", userService.findByName(principal.getName()));
@@ -37,7 +36,6 @@ public class UserController {
 
     @RequestMapping(value = "/saveUser")
     public String saveUser(@ModelAttribute("user") User user, Model model) {
-        model.addAttribute("roles", userService.getRoles());
         model.addAttribute("users", userService.getAllUsers());
         userService.saveUser(user);
         return "redirect:/admin";
@@ -45,7 +43,6 @@ public class UserController {
 
     @GetMapping(value = "admin/updateUser/{id}")
     public String getUser(ModelMap model, @PathVariable("id") Long id) {
-        model.addAttribute("roles", userService.getRoles());
         User user = userService.getUser(id);
         model.addAttribute("user", user);
         return "updateUser";
@@ -53,7 +50,6 @@ public class UserController {
 
     @PostMapping(value = "/updateUser")
     public String updateUser(@ModelAttribute("user") User user, Model model) {
-        model.addAttribute("roles", userService.getRoles());
         userService.updateUser(user);
         return "redirect:/admin";
     }
