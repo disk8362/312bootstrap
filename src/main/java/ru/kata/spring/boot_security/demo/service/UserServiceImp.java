@@ -15,7 +15,9 @@ import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,7 +41,31 @@ public class UserServiceImp implements UserService, UserDetailsService {
     @Transactional
     public void saveUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        Set<Role> existingRoles = new HashSet<>();
+        for (Role role : user.getRoles()) {
+            Role existingRole = roleDao.find(role.getId());
+            if (existingRole != null) {
+                existingRoles.add(existingRole);
+            }
+        }
+        user.setRoles(existingRoles);
         userDao.saveUser(user);
+    }
+
+    @Override
+    @Transactional
+    public void updateUser(User user) {
+
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        Set<Role> existingRoles = new HashSet<>();
+        for (Role role : user.getRoles()) {
+            Role existingRole = roleDao.find(role.getId());
+            if (existingRole != null) {
+                existingRoles.add(existingRole);
+            }
+        }
+        user.setRoles(existingRoles);
+        userDao.updateUser(user);
     }
 
     @Override
@@ -52,13 +78,6 @@ public class UserServiceImp implements UserService, UserDetailsService {
     @Transactional
     public void deleteUser(Long id) {
         userDao.deleteUser(id);
-    }
-
-    @Override
-    @Transactional
-    public void updateUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userDao.updateUser(user);
     }
 
     public User findByName(String email) {
@@ -89,5 +108,10 @@ public class UserServiceImp implements UserService, UserDetailsService {
     @Override
     public List<Role> getRoles() {
         return roleDao.getRoles();
+    }
+
+    @Override
+    public Role find(Long id) {
+        return roleDao.find(id);
     }
 }

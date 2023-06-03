@@ -16,4 +16,5 @@ public interface UserService extends UserDetailsService {
     public User findByName(String email);
     void addRole(Role role);
     public List<Role> getRoles();
+    public Role find(Long id);
 }
